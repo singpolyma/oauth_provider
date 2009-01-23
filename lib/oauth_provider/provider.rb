@@ -1,8 +1,9 @@
 module OAuthProvider
   class Provider
-    def initialize(backend)
-      @backend = backend
-    end
+		def initialize(backend)
+			@backend = backend
+		end
+		attr_reader :backend
 
     # Request verification
 
@@ -24,8 +25,8 @@ module OAuthProvider
       @backend.consumers
     end
 
-    def add_consumer(callback)
-      @backend.add_consumer(self, callback)
+    def add_consumer(callback, token = Token.generate)
+      @backend.add_consumer(self, callback, token)
     end
 
     def find_consumer(shared_key)
