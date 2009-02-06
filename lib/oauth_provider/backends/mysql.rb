@@ -17,6 +17,7 @@ module OAuthProvider
         @db.real_query("CREATE TABLE IF NOT EXISTS request_tokens (shared_key CHAR(22) PRIMARY KEY, secret_key CHAR(43), authorized INT, consumer_shared_key CHAR(43))")
         @db.real_query("CREATE TABLE IF NOT EXISTS access_tokens (shared_key CHAR(22) PRIMARY KEY, secret_key CHAR(43), request_shared_key CHAR(43), consumer_shared_key CHAR(43))")
       end
+		attr_reader :db
 
 		def clear!
         @db.real_query("DROP TABLE IF EXISTS consumers")
@@ -81,7 +82,7 @@ module OAuthProvider
 
       def find_user_access(shared_key)
         @db.query("SELECT shared_key, secret_key, request_shared_key, consumer_shared_key FROM access_tokens WHERE shared_key = '#{shared_key}' LIMIT 1").each do |row|
-          return OAuthProvider::UserRequest.new(self, self.find_consumer(row[3]), true, OAuthProvider::Token.new(row[0], row[1]))
+          return OAuthProvider::UserAccess.new(self, self.find_consumer(row[3]), row[2], OAuthProvider::Token.new(row[0], row[1]))
         end
         nil
       end
