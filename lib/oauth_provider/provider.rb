@@ -25,8 +25,8 @@ module OAuthProvider
       @backend.consumers
     end
 
-    def add_consumer(callback, token = Token.generate_token)
-      @backend.add_consumer(self, callback, token)
+    def add_consumer(callback, token = nil)
+      @backend.add_consumer(self, callback, token || Token.generate)
     end
 
     def find_consumer(shared_key)
