@@ -10,7 +10,11 @@ module OAuth::RequestProxy
 	 end
 	 
 	 def uri
-		'http://' + request.server_name + (request.server_port == 80 ? '' : ':' + request.server_port.to_s) + request.script_name # http is bad assumption
+	 	if ENV['SCRIPT_URI']
+			ENV['SCRIPT_URI']
+		else
+			'http://' + request.server_name + (request.server_port == 80 ? '' : ':' + request.server_port.to_s) + request.script_name # http is bad assumption
+		end
 	 end
 
 	 def parameters
